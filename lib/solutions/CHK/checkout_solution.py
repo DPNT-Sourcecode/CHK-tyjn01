@@ -8,7 +8,8 @@ INDIVIDUAL_ITEM_PRICES = {
     'B': 30,
     'C': 20,
     'D': 15,
-    'E': 40
+    'E': 40,
+    'F': 10,
 }
 
 
@@ -41,6 +42,12 @@ SPECIAL_OFFERS = [
         'offer_type': OfferTypes.get_one_free,
         'quantity': 2,
         'free_gift': 'B'
+    },
+    {
+        'sku': 'F',
+        'offer_type': OfferTypes.get_one_free,
+        'quantity': 2,
+        'free_gift': 'F'
     }
 ]
 
@@ -70,7 +77,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             # Assumption here that a given item can only be used for 1 offer at a time,
             # and that get_one_free offers have a higher precedence
 
-            sku_counts[sku] = sku_count % offer_details['quantity']
+            sku_counts[sku] = sku_counts[sku] % offer_details['quantity']
             total += (sku_count - sku_counts[sku]) * INDIVIDUAL_ITEM_PRICES[sku]
 
         elif offer_details['offer_type'] == OfferTypes.multi_price:
@@ -101,4 +108,5 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 

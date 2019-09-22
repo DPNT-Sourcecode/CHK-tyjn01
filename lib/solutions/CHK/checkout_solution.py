@@ -292,12 +292,15 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             # because we are fair to the customers we include expensive items first:
             items_in_offer_sorted_by_price = sorted(
                 [(sku, item) for sku, item in ITEMS.items() if sku in offer_details['skus']],
-                key=lambda _, i: -i['price']
+                key=lambda i: -i[1]['unit_price']
             )
 
             items_to_process = num_multiples * offer_details['quantity']
             for sku, item in items_in_offer_sorted_by_price:
-                item_sku_count = sku_counts[item]
+                if not items_to_process:
+                    break
+
+                item_sku_count = sku_counts[sku]
 
                 number_to_reduce_by = max(item_sku_count, items_to_process)
                 items_to_process -= number_to_reduce_by
@@ -354,6 +357,7 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 
 

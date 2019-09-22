@@ -41,5 +41,3 @@ class CheckoutHelper:
             self.offers,
             key=_offers_sort_key
         )
-
-

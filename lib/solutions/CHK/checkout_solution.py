@@ -1,62 +1,14 @@
 from collections import defaultdict
-from typing import Dict
 from copy import deepcopy
 
 from lib.solutions.CHK.checkout_helper import CheckoutHelper
 from .items import ITEMS, OfferTypes
 
 
-
-def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
-    def offer_sort_key(offer: dict) -> (int, int):
-        offer_types_order = {
-            OfferTypes.group_buy_discount: -1,
-            OfferTypes.get_one_free: 0,
-            OfferTypes.multi_price: 1
-        }
-
-        return offer_types_order[offer['offer_type']], -offer['quantity']
-
-    sku_counts = deepcopy(sku_counts)
-    total = 0
-
-    special_offers = []
-    for item in ITEMS.values():
-        if item['offers']:
-            special_offers.extend(item['offers'])
-
-    # sort offers by type and then quantity (biggest first)
-    sorted_offers = sorted(
-        special_offers,
-        key=offer_sort_key
-    )
-    for offer_details in sorted_offers:
-        offer_type = offer_details['offer_type']
-
-        if offer_type == OfferTypes.group_buy_discount:
-
-
-        else:
-            sku = offer_details['sku']
-            sku_count = sku_counts[sku]
-
-            if offer_type == OfferTypes.get_one_free:
-
-
-            elif offer_type == OfferTypes.multi_price:
-                num_multiples = sku_count // offer_details['quantity']
-
-                total += num_multiples * offer_details['price']
-
-                sku_counts[sku] = sku_count % offer_details['quantity']
-
-    return sku_counts, total
-
-
-
 checkout_helper = CheckoutHelper(ITEMS)
 
-def _apply_group_discount_offer(offer_details: dict, sku_counts: dict):
+
+def _apply_group_discount_offer(offer_details: dict, sku_counts: dict) -> (dict, int):
     sku_counts = deepcopy(sku_counts)
 
     subtotal = 0
@@ -84,7 +36,8 @@ def _apply_group_discount_offer(offer_details: dict, sku_counts: dict):
 
     return sku_counts, subtotal
 
-def _apply_get_one_free_offer(offer_details: dict, sku_counts: dict):
+
+def _apply_get_one_free_offer(offer_details: dict, sku_counts: dict) -> (dict, int):
     sku = offer_details['sku']
     sku_count = sku_counts[sku]
 
@@ -105,7 +58,22 @@ def _apply_get_one_free_offer(offer_details: dict, sku_counts: dict):
     # the bill at their individual item price.
     sku_counts[sku] -= num_multiples * offer_details['quantity']
 
-    subtotal += (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
+    subtotal = (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
+
+    return sku_counts, subtotal
+
+
+def _apply_multiprice_discount(offer_details: dict, sku_counts: dict) -> (dict, int):
+    sku = offer_details['sku']
+    sku_count = sku_counts[sku]
+
+    num_multiples = sku_count // offer_details['quantity']
+
+    subtotal = num_multiples * offer_details['price']
+    sku_counts[sku] = sku_count % offer_details['quantity']
+
+    return sku_counts, subtotal
+
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -118,22 +86,21 @@ def checkout(skus: str) -> int:
 
         sku_counts[sku] += 1
 
+    total = 0
     for offer_details in checkout_helper.get_offers_in_apply_order():
         offer_type = offer_details['offer_type']
 
         if offer_type == OfferTypes.group_buy_discount:
             sku_counts, subtotal = _apply_group_discount_offer(offer_details, sku_counts)
         elif offer_type == OfferTypes.get_one_free:
+            sku_counts, subtotal = _apply_get_one_free_offer(offer_details, sku_counts)
+        elif offer_type == OfferTypes.multi_price:
+            sku_counts, subtotal = _apply_multiprice_discount(offer_details, sku_counts)
 
-
-
+        total += subtotal
 
     total = sub_total
     for sku, count in sku_counts_after_applying_offers.items():
         total += count * ITEMS[sku]['unit_price']
 
     return total
-
-
-
-

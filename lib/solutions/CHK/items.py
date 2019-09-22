@@ -1,9 +1,11 @@
 from enum import Enum, auto
 
+
 class OfferTypes(Enum):
     multi_price = auto()
     get_one_free = auto()
     group_buy_discount = auto()
+
 
 ITEMS = [
     {
@@ -24,8 +26,8 @@ ITEMS = [
             },
         ]
     },
-    'B': {
-    'sku':
+    {
+    'sku': 'B',
         'unit_price': 30,
         'offers': [
             {
@@ -36,18 +38,18 @@ ITEMS = [
             },
         ]
     },
-    'C': {
-    'sku':
+    {
+    'sku': 'C',
         'unit_price': 20,
         'offers': []
     },
-    'D': {
-        'sku':
+    {
+        'sku': 'D',
         'unit_price': 15,
         'offers': []
     },
-    'E': {
-        'sku':
+    {
+        'sku': 'E',
         'unit_price': 40,
         'offers': [
             {
@@ -58,8 +60,8 @@ ITEMS = [
             }
         ]
     },
-    'F': {
-        'sku':
+    {
+        'sku': 'F',
         'unit_price': 10,
         'offers': [
             {
@@ -70,13 +72,13 @@ ITEMS = [
             }
         ]
     },
-    'G': {
-        'sku':
+    {
+        'sku': 'G',
         'unit_price': 20,
         'offers': []
     },
-    'H': {
-        'sku':
+    {
+        'sku': 'H',
         'unit_price': 10,
         'offers': [
             {
@@ -93,18 +95,18 @@ ITEMS = [
             },
         ]
     },
-    'I': {
-        'sku':
+    {
+        'sku': 'I',
         'unit_price': 35,
         'offers': []
     },
-    'J': {
-        'sku':
+    {
+        'sku': 'J',
         'unit_price': 60,
         'offers': []
     },
-    'K': {
-        'sku':
+    {
+        'sku': 'K',
         'unit_price': 70,
         'offers': [
             {
@@ -115,18 +117,18 @@ ITEMS = [
             }
         ]
     },
-    'L': {
-        'sku':
+    {
+        'sku': 'L',
         'unit_price': 90,
         'offers': []
     },
-    'M': {
-        'sku':
+    {
+        'sku': 'M',
         'unit_price': 15,
         'offers': []
     },
-    'N': {
-        'sku':
+    {
+        'sku': 'N',
         'unit_price': 40,
         'offers': [
             {
@@ -137,13 +139,13 @@ ITEMS = [
             }
         ]
     },
-    'O': {
-        'sku':
+    {
+        'sku': 'O',
         'unit_price': 10,
         'offers': []
     },
-    'P': {
-        'sku':
+    {
+        'sku': 'P',
         'unit_price': 50,
         'offers': [
             {
@@ -154,8 +156,8 @@ ITEMS = [
             }
         ]
     },
-    'Q': {
-        'sku':
+    {
+        'sku': 'Q',
         'unit_price': 30,
         'offers': [
             {
@@ -166,8 +168,8 @@ ITEMS = [
             }
         ]
     },
-    'R': {
-        'sku':
+    {
+        'sku': 'R',
         'unit_price': 50,
         'offers': [
             {
@@ -178,8 +180,8 @@ ITEMS = [
             }
         ]
     },
-    'S': {
-        'sku':
+    {
+        'sku': 'S',
         'unit_price': 20,
         'offers': [
             {
@@ -190,8 +192,8 @@ ITEMS = [
             }
         ]
     },
-    'T': {
-        'sku':
+    {
+        'sku': 'T',
         'unit_price': 20,
         'offers': [
             {
@@ -202,8 +204,8 @@ ITEMS = [
             }
         ]
     },
-    'U': {
-        'sku':
+    {
+        'sku': 'U',
         'unit_price': 40,
         'offers': [
             {
@@ -214,7 +216,7 @@ ITEMS = [
             },
         ]
     },
-    'V': {
+    {
         'sku': 'V',
         'unit_price': 50,
         'offers': [
@@ -232,12 +234,12 @@ ITEMS = [
             }
         ]
     },
-    'W': {
+    {
         'sku': 'W',
         'unit_price': 20,
         'offers': []
     },
-    'X': {
+    {
         'sku': 'X',
         'unit_price': 17,
         'offers': [
@@ -249,7 +251,7 @@ ITEMS = [
             }
         ]
     },
-    'Y': {
+    {
         'sku': 'Y',
         'unit_price': 20,
         'offers': [
@@ -261,7 +263,7 @@ ITEMS = [
             }
         ]
     },
-    'Z': {
+    {
         'sku': 'Z',
         'unit_price': 21,
         'offers': [
@@ -273,5 +275,7 @@ ITEMS = [
             }
         ]
     },
-}
+]
+
+
 

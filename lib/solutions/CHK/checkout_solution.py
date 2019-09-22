@@ -1,258 +1,10 @@
 from collections import defaultdict
-from enum import Enum, auto
 from typing import Dict
 from copy import deepcopy
 
+from lib.solutions.CHK.checkout_helper import CheckoutHelper
+from .items import ITEMS, OfferTypes
 
-class OfferTypes(Enum):
-    multi_price = auto()
-    get_one_free = auto()
-    group_buy_discount = auto()
-
-
-ITEMS = {
-    'A': {
-        'unit_price': 50,
-        'offers': [
-            {
-                'sku': 'A',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 3,
-                'price': 130
-            },
-            {
-                'sku': 'A',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 5,
-                'price': 200
-            },
-        ]
-    },
-    'B': {
-        'unit_price': 30,
-        'offers': [
-            {
-                'sku': 'B',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 2,
-                'price': 45
-            },
-        ]
-    },
-    'C': {
-        'unit_price': 20,
-        'offers': []
-    },
-    'D': {
-        'unit_price': 15,
-        'offers': []
-    },
-    'E': {
-        'unit_price': 40,
-        'offers': [
-            {
-                'sku': 'E',
-                'offer_type': OfferTypes.get_one_free,
-                'quantity': 2,
-                'free_gift': 'B'
-            }
-        ]
-    },
-    'F': {
-        'unit_price': 10,
-        'offers': [
-            {
-                'sku': 'F',
-                'offer_type': OfferTypes.get_one_free,
-                'quantity': 2,
-                'free_gift': 'F'
-            }
-        ]
-    },
-    'G': {
-        'unit_price': 20,
-        'offers': []
-    },
-    'H': {
-        'unit_price': 10,
-        'offers': [
-            {
-                'sku': 'H',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 5,
-                'price': 45
-            },
-            {
-                'sku': 'H',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 10,
-                'price': 80
-            },
-        ]
-    },
-    'I': {
-        'unit_price': 35,
-        'offers': []
-    },
-    'J': {
-        'unit_price': 60,
-        'offers': []
-    },
-    'K': {
-        'unit_price': 70,
-        'offers': [
-            {
-                'sku': 'K',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 2,
-                'price': 120
-            }
-        ]
-    },
-    'L': {
-        'unit_price': 90,
-        'offers': []
-    },
-    'M': {
-        'unit_price': 15,
-        'offers': []
-    },
-    'N': {
-        'unit_price': 40,
-        'offers': [
-            {
-                'sku': 'N',
-                'offer_type': OfferTypes.get_one_free,
-                'quantity': 3,
-                'free_gift': 'M'
-            }
-        ]
-    },
-    'O': {
-        'unit_price': 10,
-        'offers': []
-    },
-    'P': {
-        'unit_price': 50,
-        'offers': [
-            {
-                'sku': 'P',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 5,
-                'price': 200
-            }
-        ]
-    },
-    'Q': {
-        'unit_price': 30,
-        'offers': [
-            {
-                'sku': 'Q',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 3,
-                'price': 80
-            }
-        ]
-    },
-    'R': {
-        'unit_price': 50,
-        'offers': [
-            {
-                'sku': 'R',
-                'offer_type': OfferTypes.get_one_free,
-                'quantity': 3,
-                'free_gift': 'Q'
-            }
-        ]
-    },
-    'S': {
-        'unit_price': 20,
-        'offers': [
-            {
-                'skus': ['S', 'T', 'X', 'Y', 'Z'],
-                'offer_type': OfferTypes.group_buy_discount,
-                'quantity': 3,
-                'price': 45
-            }
-        ]
-    },
-    'T': {
-        'unit_price': 20,
-        'offers': [
-            {
-                'skus': ['S', 'T', 'X', 'Y', 'Z'],
-                'offer_type': OfferTypes.group_buy_discount,
-                'quantity': 3,
-                'price': 45
-            }
-        ]
-    },
-    'U': {
-        'unit_price': 40,
-        'offers': [
-            {
-                'sku': 'U',
-                'offer_type': OfferTypes.get_one_free,
-                'quantity': 3,
-                'free_gift': 'U'
-            },
-        ]
-    },
-    'V': {
-        'unit_price': 50,
-        'offers': [
-            {
-                'sku': 'V',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 2,
-                'price':  90
-            },
-            {
-                'sku': 'V',
-                'offer_type': OfferTypes.multi_price,
-                'quantity': 3,
-                'price':  130
-            }
-        ]
-    },
-    'W': {
-        'unit_price': 20,
-        'offers': []
-    },
-    'X': {
-        'unit_price': 17,
-        'offers': [
-            {
-                'skus': ['S', 'T', 'X', 'Y', 'Z'],
-                'offer_type': OfferTypes.group_buy_discount,
-                'quantity': 3,
-                'price': 45
-            }
-        ]
-    },
-    'Y': {
-        'unit_price': 20,
-        'offers': [
-            {
-                'skus': ['S', 'T', 'X', 'Y', 'Z'],
-                'offer_type': OfferTypes.group_buy_discount,
-                'quantity': 3,
-                'price': 45
-            }
-        ]
-    },
-    'Z': {
-        'unit_price': 21,
-        'offers': [
-            {
-                'skus': ['S', 'T', 'X', 'Y', 'Z'],
-                'offer_type': OfferTypes.group_buy_discount,
-                'quantity': 3,
-                'price': 45
-            }
-        ]
-    },
-}
 
 
 def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
@@ -282,29 +34,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
         offer_type = offer_details['offer_type']
 
         if offer_type == OfferTypes.group_buy_discount:
-            sku_count = sum(
-                sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
-            )
 
-            num_multiples = sku_count // offer_details['quantity']
-            total += num_multiples * offer_details['price']
-
-            # because we are fair to the customers we include expensive items first:
-            items_in_offer_sorted_by_price = sorted(
-                [(sku, item) for sku, item in ITEMS.items() if sku in offer_details['skus']],
-                key=lambda i: -i[1]['unit_price']
-            )
-
-            items_to_process = num_multiples * offer_details['quantity']
-            for sku, item in items_in_offer_sorted_by_price:
-                if not items_to_process:
-                    break
-
-                item_sku_count = sku_counts[sku]
-
-                number_to_reduce_by = min(item_sku_count, items_to_process)
-                items_to_process -= number_to_reduce_by
-                sku_counts[sku] -= number_to_reduce_by
 
         else:
             sku = offer_details['sku']
@@ -338,6 +68,32 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
 
     return sku_counts, total
 
+def _apply_group_discount_offer():
+    sku_count = sum(
+        sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
+    )
+
+    num_multiples = sku_count // offer_details['quantity']
+    total += num_multiples * offer_details['price']
+
+    # because we are fair to the customers we include expensive items first:
+    items_in_offer_sorted_by_price = sorted(
+        [(sku, item) for sku, item in ITEMS.items() if sku in offer_details['skus']],
+        key=lambda i: -i[1]['unit_price']
+    )
+
+    items_to_process = num_multiples * offer_details['quantity']
+    for sku, item in items_in_offer_sorted_by_price:
+        if not items_to_process:
+            break
+
+        item_sku_count = sku_counts[sku]
+
+        number_to_reduce_by = min(item_sku_count, items_to_process)
+        items_to_process -= number_to_reduce_by
+        sku_counts[sku] -= number_to_reduce_by
+
+checkout_helper = CheckoutHelper(ITEMS)
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -345,16 +101,22 @@ def checkout(skus: str) -> int:
     sku_counts = defaultdict(int)
 
     for sku in skus:
-        if sku not in ITEMS:
+        if checkout_helper.get_item_by_sku(sku) is None:
             return -1
 
         sku_counts[sku] += 1
 
-    sku_counts_after_applying_offers, sub_total = apply_offers(sku_counts)
+    for offer_details in checkout_helper.get_offers_in_apply_order():
+        offer_type = offer_details['offer_type']
+
+        if offer_type == OfferTypes.group_buy_discount:
+
+
 
     total = sub_total
     for sku, count in sku_counts_after_applying_offers.items():
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 

@@ -1,5 +1,5 @@
 from typing import List, Iterable, Union
-from .items import OfferTypes
+from .offer_types import OfferTypes
 
 
 class CheckoutHelper:
@@ -21,27 +21,29 @@ class CheckoutHelper:
         :param skus: The skus to lookup
         :return: The sorted items
         """
-
-        return sorted(
-            filter(
+        items = list(filter(
                 lambda i: i['sku'] in skus,
-                self.items
-            ),
+                self.items.values()
+            ))
+        print(items)
+        return sorted(
+            items,
             key=lambda i: -i['unit_price']
         )
 
     def get_offers_in_apply_order(self) -> List[dict]:
         def _offers_sort_key(offer: dict) -> (int, int):
             offer_types_order = {
-                OfferTypes.group_buy_discount: -1,
-                OfferTypes.get_one_free: 0,
-                OfferTypes.multi_price: 1
+                OfferTypes.group_buy_discount.name: -1,
+                OfferTypes.get_one_free.name: 0,
+                OfferTypes.multi_price.name: 1
             }
 
-            return offer_types_order[offer['offer_type']], -offer['quantity']
+            return offer_types_order[offer['offer_type'].name], -offer['quantity']
 
         return sorted(
             self.offers,
             key=_offers_sort_key
         )
+
 

@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from .offer_types import OfferTypes
 
 ITEMS = [
     {
@@ -269,5 +269,6 @@ ITEMS = [
         ]
     },
 ]
+
 
 

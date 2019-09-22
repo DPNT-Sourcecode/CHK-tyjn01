@@ -2,7 +2,8 @@ from collections import defaultdict
 from copy import deepcopy
 
 from lib.solutions.CHK.checkout_helper import CheckoutHelper
-from .items import ITEMS, OfferTypes
+from .items import ITEMS
+from .offer_types import OfferTypes
 
 
 checkout_helper = CheckoutHelper(ITEMS)
@@ -105,4 +106,5 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 

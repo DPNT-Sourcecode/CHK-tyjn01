@@ -2,7 +2,6 @@ from collections import defaultdict
 from enum import Enum, auto
 from typing import Dict
 from copy import deepcopy
-import itertools
 
 
 class OfferTypes(Enum):
@@ -192,6 +191,12 @@ ITEMS = {
                 'offer_type': OfferTypes.multi_price,
                 'quantity': 2,
                 'price':  90
+            },
+            {
+                'sku': 'V',
+                'offer_type': OfferTypes.multi_price,
+                'quantity': 3,
+                'price':  130
             }
         ]
     },
@@ -279,6 +284,7 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 
 

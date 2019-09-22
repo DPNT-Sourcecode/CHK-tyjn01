@@ -221,15 +221,36 @@ ITEMS = {
     },
     'X': {
         'unit_price': 17,
-        'offers': []
+        'offers': [
+            {
+                'skus': ['S', 'T', 'X', 'Y', 'Z'],
+                'offer_type': OfferTypes.group_buy_discount,
+                'quantity': 3,
+                'price': 45
+            }
+        ]
     },
     'Y': {
         'unit_price': 20,
-        'offers': []
+        'offers': [
+            {
+                'skus': ['S', 'T', 'X', 'Y', 'Z'],
+                'offer_type': OfferTypes.group_buy_discount,
+                'quantity': 3,
+                'price': 45
+            }
+        ]
     },
     'Z': {
         'unit_price': 21,
-        'offers': []
+        'offers': [
+            {
+                'skus': ['S', 'T', 'X', 'Y', 'Z'],
+                'offer_type': OfferTypes.group_buy_discount,
+                'quantity': 3,
+                'price': 45
+            }
+        ]
     },
 }
 
@@ -299,5 +320,6 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 

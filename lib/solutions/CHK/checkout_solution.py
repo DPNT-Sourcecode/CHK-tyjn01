@@ -68,32 +68,34 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
 
     return sku_counts, total
 
-def _apply_group_discount_offer():
-    sku_count = sum(
+
+
+checkout_helper = CheckoutHelper(ITEMS)
+
+def _apply_group_discount_offer(offer_details: dict, sku_counts: dict):
+    sku_counts = deepcopy(sku_counts)
+
+    subtotal = 0
+
+    qualifying_purchase_number = sum(
         sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
     )
 
-    num_multiples = sku_count // offer_details['quantity']
-    total += num_multiples * offer_details['price']
-
-    # because we are fair to the customers we include expensive items first:
-    items_in_offer_sorted_by_price = sorted(
-        [(sku, item) for sku, item in ITEMS.items() if sku in offer_details['skus']],
-        key=lambda i: -i[1]['unit_price']
-    )
+    num_multiples = qualifying_purchase_number // offer_details['quantity']
+    subtotal += num_multiples * offer_details['price']
 
     items_to_process = num_multiples * offer_details['quantity']
-    for sku, item in items_in_offer_sorted_by_price:
-        if not items_to_process:
-            break
 
-        item_sku_count = sku_counts[sku]
+    # because we are fair to the customers we include expensive items first:
+    for item in checkout_helper.get_items_by_skus_sorted_by_price(offer_details['skus']):
+        item_sku_count = sku_counts[item['sku']]
 
         number_to_reduce_by = min(item_sku_count, items_to_process)
         items_to_process -= number_to_reduce_by
         sku_counts[sku] -= number_to_reduce_by
 
-checkout_helper = CheckoutHelper(ITEMS)
+        if not items_to_process:
+            break
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -110,6 +112,7 @@ def checkout(skus: str) -> int:
         offer_type = offer_details['offer_type']
 
         if offer_type == OfferTypes.group_buy_discount:
+            _apply_group_discount_offer(offer_details, sku_counts)
 
 
 
@@ -118,5 +121,6 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 

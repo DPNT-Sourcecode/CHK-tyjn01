@@ -64,12 +64,13 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
     for offer_details in sorted_offers:
         sku = offer_details['sku']
         sku_count = sku_counts[sku]
-        num_multiples = sku_count // offer_details['quantity']
-
-        if num_multiples == 0:
-            continue
 
         if offer_details['offer_type'] == OfferTypes.get_one_free:
+            if offer_details['free_gift'] == sku:
+                num_multiples = sku_count // offer_details['quantity'] + 1
+            else:
+                num_multiples = sku_count // offer_details['quantity']
+
             sku_count_of_free_gift = sku_counts[offer_details['free_gift']]
 
             sku_counts[offer_details['free_gift']] = max(sku_count_of_free_gift - num_multiples, 0)
@@ -108,5 +109,6 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 
 

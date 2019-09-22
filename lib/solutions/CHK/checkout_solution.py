@@ -308,21 +308,6 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             total += num_multiples * offer_details['price']
 
             sku_counts[sku] = sku_count % offer_details['quantity']
-        elif offer_type == OfferTypes.group_buy_discount:
-            sku_count = sum(
-                sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
-            )
-            num_multiples = sku_count // offer_details['quantity']
-
-            total += num_multiples * offer_details['price']
-
-            # because we are fair to the customers we include expensive items first:
-            items_in_offer_sorted_by_price = sorted(
-                [item for item in ITEMS.values() if item['sku'] in offer_details['skus']],
-                key=lambda i: -i['price']
-            )
-
-
 
     return sku_counts, total
 
@@ -345,6 +330,7 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 
 

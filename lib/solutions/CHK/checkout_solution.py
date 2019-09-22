@@ -59,7 +59,8 @@ def _apply_get_one_free_offer(offer_details: dict, sku_counts: dict) -> (dict, i
     # the bill at their individual item price.
     sku_counts[sku] -= num_multiples * offer_details['quantity']
 
-    subtotal = (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
+    item_price = checkout_helper.get_item_by_sku(sku)['unit_price']
+    subtotal = (num_multiples * offer_details['quantity']) * item_price
 
     return sku_counts, subtotal
 
@@ -68,9 +69,10 @@ def _apply_multiprice_discount(offer_details: dict, sku_counts: dict) -> (dict, 
     sku = offer_details['sku']
     sku_count = sku_counts[sku]
 
-    num_multiples = sku_count // offer_details['quantity']
+    # The subtotal is the number of times the offer can be applied * the offer price
+    num_times_to_apply_offer = sku_count // offer_details['quantity']
+    subtotal = num_times_to_apply_offer * offer_details['price']
 
-    subtotal = num_multiples * offer_details['price']
     sku_counts[sku] = sku_count % offer_details['quantity']
 
     return sku_counts, subtotal
@@ -103,8 +105,9 @@ def checkout(skus: str) -> int:
         total += subtotal
 
     for sku, count in sku_counts.items():
-        total += count * ITEMS[sku]['unit_price']
+        total += count * checkout_helper.get_item_by_sku(sku)['unit_price']
 
     return total
+
 
 

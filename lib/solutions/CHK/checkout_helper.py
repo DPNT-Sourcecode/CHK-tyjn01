@@ -21,13 +21,12 @@ class CheckoutHelper:
         :param skus: The skus to lookup
         :return: The sorted items
         """
-        items = list(filter(
+
+        return sorted(
+            filter(
                 lambda i: i['sku'] in skus,
                 self.items.values()
-            ))
-        print(items)
-        return sorted(
-            items,
+            ),
             key=lambda i: -i['unit_price']
         )
 
@@ -45,5 +44,6 @@ class CheckoutHelper:
             self.offers,
             key=_offers_sort_key
         )
+
 
 

@@ -96,11 +96,13 @@ def checkout(skus: str) -> int:
             sku_counts, subtotal = _apply_get_one_free_offer(offer_details, sku_counts)
         elif offer_type == OfferTypes.multi_price:
             sku_counts, subtotal = _apply_multiprice_discount(offer_details, sku_counts)
+        else:
+            raise NotImplementedError(f'The offer type "{offer_type}" is not yet implemented')
 
         total += subtotal
 
-    total = sub_total
-    for sku, count in sku_counts_after_applying_offers.items():
+    for sku, count in sku_counts.items():
         total += count * ITEMS[sku]['unit_price']
 
     return total
+

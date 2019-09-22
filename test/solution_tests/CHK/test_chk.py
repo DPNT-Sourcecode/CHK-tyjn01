@@ -41,5 +41,6 @@ class TestCheckout():
         assert checkout_solution.checkout('P'*11) == 450
 
     def test_group_purchase(self):
-        assert checkout_solution.checkout('S'*4 + 'T'*3 + 'X'*5 + 'Y'*3 + 'Z'*3) == 242
+        assert checkout_solution.checkout('S'*4 + 'T'*1 + 'X'*5 + 'Y'*3 + 'Z'*3) == 242
+
 

@@ -304,7 +304,8 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
 
                 number_to_reduce_by = max(item_sku_count, items_to_process)
                 items_to_process -= number_to_reduce_by
-                item_sku_count -= number_to_reduce_by
+                sku_counts[sku] -= number_to_reduce_by
+            print('')
 
         else:
             sku = offer_details['sku']

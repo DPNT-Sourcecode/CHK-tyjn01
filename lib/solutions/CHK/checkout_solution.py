@@ -2,6 +2,7 @@ from collections import defaultdict
 from enum import Enum, auto
 from typing import Dict
 from copy import deepcopy
+import itertools
 
 
 class OfferTypes(Enum):
@@ -217,6 +218,9 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
     sku_counts = deepcopy(sku_counts)
     total = 0
 
+    special_offers = itertools.chain([
+        offers for offers in ITEMS.values()
+    ])
     # sort offers by type and then quantity (biggest first)
     sorted_offers = sorted(
         SPECIAL_OFFERS,
@@ -261,7 +265,7 @@ def checkout(skus: str) -> int:
     sku_counts = defaultdict(int)
 
     for sku in skus:
-        if sku not in INDIVIDUAL_ITEM_PRICES:
+        if sku not in ITEMS:
             return -1
 
         sku_counts[sku] += 1
@@ -270,9 +274,10 @@ def checkout(skus: str) -> int:
 
     total = sub_total
     for sku, count in sku_counts_after_applying_offers.items():
-        total += count * INDIVIDUAL_ITEM_PRICES[sku]
+        total += count * ITEMS[sku]['price']
 
     return total
+
 
 
 

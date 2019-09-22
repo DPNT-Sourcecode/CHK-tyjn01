@@ -12,14 +12,12 @@ checkout_helper = CheckoutHelper(ITEMS)
 def _apply_group_discount_offer(offer_details: dict, sku_counts: dict) -> (dict, int):
     sku_counts = deepcopy(sku_counts)
 
-    subtotal = 0
-
     qualifying_purchase_number = sum(
         sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
     )
 
     num_multiples = qualifying_purchase_number // offer_details['quantity']
-    subtotal += num_multiples * offer_details['price']
+    subtotal = num_multiples * offer_details['price']
 
     number_of_items_used_in_offer = num_multiples * offer_details['quantity']
 
@@ -43,24 +41,25 @@ def _apply_get_one_free_offer(offer_details: dict, sku_counts: dict) -> (dict, i
     sku_count = sku_counts[sku]
 
     if offer_details['free_gift'] == sku:
-        # Need to take into account that you to give away an F you need some
+        # Need to take into account that you to give away an F you need
         # the offer quantity + 1, for example if 4 F's purchased then only 1 can be
         # given away as you have 2F + 1 for free, and 1 at the normal price.
-        num_multiples = sku_count // (offer_details['quantity'] + 1)
+        times_offer_can_be_used = sku_count // (offer_details['quantity'] + 1)
     else:
-        num_multiples = sku_count // offer_details['quantity']
+        times_offer_can_be_used = sku_count // offer_details['quantity']
 
     sku_count_of_free_gift = sku_counts[offer_details['free_gift']]
 
-    sku_counts[offer_details['free_gift']] = max(sku_count_of_free_gift - num_multiples, 0)
+    sku_counts[offer_details['free_gift']] = \
+        max(sku_count_of_free_gift - times_offer_can_be_used, 0)
 
     # To prevent a given item being counted multiple times the sku count must be reduced
     # by the number state in this offer, and then the "processed" items are simply added to
     # the bill at their individual item price.
-    sku_counts[sku] -= num_multiples * offer_details['quantity']
+    sku_counts[sku] -= times_offer_can_be_used * offer_details['quantity']
 
     item_price = checkout_helper.get_item_by_sku(sku)['unit_price']
-    subtotal = (num_multiples * offer_details['quantity']) * item_price
+    subtotal = (times_offer_can_be_used * offer_details['quantity']) * item_price
 
     return sku_counts, subtotal
 
@@ -70,8 +69,8 @@ def _apply_multiprice_discount(offer_details: dict, sku_counts: dict) -> (dict, 
     sku_count = sku_counts[sku]
 
     # The subtotal is the number of times the offer can be applied * the offer price
-    num_times_to_apply_offer = sku_count // offer_details['quantity']
-    subtotal = num_times_to_apply_offer * offer_details['price']
+    times_offer_can_be_used = sku_count // offer_details['quantity']
+    subtotal = times_offer_can_be_used * offer_details['price']
 
     sku_counts[sku] = sku_count % offer_details['quantity']
 
@@ -108,6 +107,7 @@ def checkout(skus: str) -> int:
         total += count * checkout_helper.get_item_by_sku(sku)['unit_price']
 
     return total
+
 
 
 

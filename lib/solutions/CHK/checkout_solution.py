@@ -152,7 +152,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             if offer_details['free_gift'] == sku:
                 # Need to take into account that you to give away an F you need some
                 # the offer quantity + 1, for example if 4 F's purchased then only 1 can be
-                # given away.
+                # given away as you have 2F + 1 for free, and 1 at the normal price.
                 num_multiples = sku_count // (offer_details['quantity'] + 1)
             else:
                 num_multiples = sku_count // offer_details['quantity']
@@ -162,7 +162,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             sku_counts[offer_details['free_gift']] = max(sku_count_of_free_gift - num_multiples, 0)
 
             # To prevent a given item being counted multiple times the sku count must be reduced
-            # by the number used in this offer, and then the "processed" items are simply added to
+            # by the number state in this offer, and then the "processed" items are simply added to
             # the bill at their individual item price.
             sku_counts[sku] -= num_multiples * offer_details['quantity']
             total += (num_multiples * offer_details['quantity']) * INDIVIDUAL_ITEM_PRICES[sku]
@@ -195,6 +195,7 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 
 
 

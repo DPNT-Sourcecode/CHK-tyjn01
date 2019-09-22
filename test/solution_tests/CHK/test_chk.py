@@ -12,7 +12,7 @@ class TestCheckout():
         assert checkout_solution.checkout('ACAAAAAABBBCD') == 430
 
     def test_ensure_favourable_multiprice(self):
-        assert checkout_solution.checkout('AAAAAAAAAAAAAA') == 580
+        assert checkout_solution.checkout('A'*14) == 580
 
     def test_get_one_free_offers(self):
         assert checkout_solution.checkout('EEBB') == 110
@@ -31,4 +31,8 @@ class TestCheckout():
         assert checkout_solution.checkout('FFFFF') == 40
         assert checkout_solution.checkout('F') == 10
         assert checkout_solution.checkout('FFFFEEEB') == 150
+
+    def test_new_items(self):
+        assert checkout_solution.checkout('H'*16) == 20
+
 

@@ -75,6 +75,9 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
 
             sku_counts[offer_details['free_gift']] = max(sku_count_of_free_gift - num_multiples, 0)
 
+            # if offer_details['free_gift'] == sku:
+            #     sku_count -= 1
+
             # Assumption here that a given item can only be used for 1 offer at a time,
             # and that get_one_free offers have a higher precedence
 
@@ -109,6 +112,7 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 
 
 

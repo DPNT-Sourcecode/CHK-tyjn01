@@ -282,7 +282,8 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
         sku = offer_details['sku']
         sku_count = sku_counts[sku]
 
-        if offer_details['offer_type'] == OfferTypes.get_one_free:
+        offer_type = offer_details['offer_type']
+        if offer_type == OfferTypes.get_one_free:
             if offer_details['free_gift'] == sku:
                 # Need to take into account that you to give away an F you need some
                 # the offer quantity + 1, for example if 4 F's purchased then only 1 can be
@@ -301,12 +302,23 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             sku_counts[sku] -= num_multiples * offer_details['quantity']
             total += (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
 
-        elif offer_details['offer_type'] == OfferTypes.multi_price:
+        elif offer_type == OfferTypes.multi_price:
             num_multiples = sku_count // offer_details['quantity']
 
             total += num_multiples * offer_details['price']
 
             sku_counts[sku] = sku_count % offer_details['quantity']
+        elif offer_type == OfferTypes.group_buy_discount:
+            sku_count = sum(
+                sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
+            )
+            num_multiples = sku_count // offer_details['quantity']
+
+            total += num_multiples * offer_details['price']
+
+            # because we are fair to the customers we include expensive items first:
+
+
 
     return sku_counts, total
 
@@ -329,4 +341,5 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 

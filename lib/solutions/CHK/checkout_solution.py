@@ -256,6 +256,15 @@ ITEMS = {
 
 
 def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
+    def offer_sort_key(offer: dict) -> (int, int):
+        offer_types_order = {
+            OfferTypes.group_buy_discount: -1,
+            OfferTypes.get_one_free: 0,
+            OfferTypes.multi_price: 1
+        }
+
+        return offer_types_order, -offer['quantity']
+
     sku_counts = deepcopy(sku_counts)
     total = 0
 
@@ -267,7 +276,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
     # sort offers by type and then quantity (biggest first)
     sorted_offers = sorted(
         special_offers,
-        key=lambda o: (o['offer_type'] != OfferTypes.get_one_free, -o['quantity'])
+        key=offer_sort_key
     )
     for offer_details in sorted_offers:
         sku = offer_details['sku']
@@ -320,3 +329,4 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+

@@ -218,10 +218,10 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
     sku_counts = deepcopy(sku_counts)
     total = 0
 
-    special_offers = list(itertools.chain(
-        i['offers'] for i in ITEMS.values()
-        if i['offers']
-    ))
+    special_offers = []
+    for item in ITEMS.values():
+        if item['offers']:
+            special_offers.extend(item['offers'])
 
     # sort offers by type and then quantity (biggest first)
     sorted_offers = sorted(
@@ -249,7 +249,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             # by the number state in this offer, and then the "processed" items are simply added to
             # the bill at their individual item price.
             sku_counts[sku] -= num_multiples * offer_details['quantity']
-            total += (num_multiples * offer_details['quantity']) * ITEMS[sku]['price']
+            total += (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
 
         elif offer_details['offer_type'] == OfferTypes.multi_price:
             num_multiples = sku_count // offer_details['quantity']
@@ -276,9 +276,10 @@ def checkout(skus: str) -> int:
 
     total = sub_total
     for sku, count in sku_counts_after_applying_offers.items():
-        total += count * ITEMS[sku]['price']
+        total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 
 

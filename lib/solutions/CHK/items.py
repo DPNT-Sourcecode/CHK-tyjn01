@@ -25,6 +25,7 @@ ITEMS = [
         ]
     },
     'B': {
+    'sku':
         'unit_price': 30,
         'offers': [
             {
@@ -36,14 +37,17 @@ ITEMS = [
         ]
     },
     'C': {
+    'sku':
         'unit_price': 20,
         'offers': []
     },
     'D': {
+        'sku':
         'unit_price': 15,
         'offers': []
     },
     'E': {
+        'sku':
         'unit_price': 40,
         'offers': [
             {
@@ -55,6 +59,7 @@ ITEMS = [
         ]
     },
     'F': {
+        'sku':
         'unit_price': 10,
         'offers': [
             {
@@ -66,10 +71,12 @@ ITEMS = [
         ]
     },
     'G': {
+        'sku':
         'unit_price': 20,
         'offers': []
     },
     'H': {
+        'sku':
         'unit_price': 10,
         'offers': [
             {
@@ -87,14 +94,17 @@ ITEMS = [
         ]
     },
     'I': {
+        'sku':
         'unit_price': 35,
         'offers': []
     },
     'J': {
+        'sku':
         'unit_price': 60,
         'offers': []
     },
     'K': {
+        'sku':
         'unit_price': 70,
         'offers': [
             {
@@ -106,14 +116,17 @@ ITEMS = [
         ]
     },
     'L': {
+        'sku':
         'unit_price': 90,
         'offers': []
     },
     'M': {
+        'sku':
         'unit_price': 15,
         'offers': []
     },
     'N': {
+        'sku':
         'unit_price': 40,
         'offers': [
             {
@@ -125,10 +138,12 @@ ITEMS = [
         ]
     },
     'O': {
+        'sku':
         'unit_price': 10,
         'offers': []
     },
     'P': {
+        'sku':
         'unit_price': 50,
         'offers': [
             {
@@ -140,6 +155,7 @@ ITEMS = [
         ]
     },
     'Q': {
+        'sku':
         'unit_price': 30,
         'offers': [
             {
@@ -151,6 +167,7 @@ ITEMS = [
         ]
     },
     'R': {
+        'sku':
         'unit_price': 50,
         'offers': [
             {
@@ -162,6 +179,7 @@ ITEMS = [
         ]
     },
     'S': {
+        'sku':
         'unit_price': 20,
         'offers': [
             {
@@ -173,6 +191,7 @@ ITEMS = [
         ]
     },
     'T': {
+        'sku':
         'unit_price': 20,
         'offers': [
             {
@@ -184,6 +203,7 @@ ITEMS = [
         ]
     },
     'U': {
+        'sku':
         'unit_price': 40,
         'offers': [
             {
@@ -195,6 +215,7 @@ ITEMS = [
         ]
     },
     'V': {
+        'sku': 'V',
         'unit_price': 50,
         'offers': [
             {
@@ -212,10 +233,12 @@ ITEMS = [
         ]
     },
     'W': {
+        'sku': 'W',
         'unit_price': 20,
         'offers': []
     },
     'X': {
+        'sku': 'X',
         'unit_price': 17,
         'offers': [
             {
@@ -227,6 +250,7 @@ ITEMS = [
         ]
     },
     'Y': {
+        'sku': 'Y',
         'unit_price': 20,
         'offers': [
             {
@@ -238,6 +262,7 @@ ITEMS = [
         ]
     },
     'Z': {
+        'sku': 'Z',
         'unit_price': 21,
         'offers': [
             {
@@ -249,3 +274,4 @@ ITEMS = [
         ]
     },
 }
+

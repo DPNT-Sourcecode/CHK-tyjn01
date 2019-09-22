@@ -71,7 +71,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             # and that get_one_free offers have a higher precedence
 
             sku_counts[sku] = sku_count % offer_details['quantity']
-            total += sku_count * INDIVIDUAL_ITEM_PRICES[sku]
+            total += (sku_count - sku_counts[sku]) * INDIVIDUAL_ITEM_PRICES[sku]
 
         elif offer_details['offer_type'] == OfferTypes.multi_price:
             num_multiples = sku_count // offer_details['quantity']
@@ -101,3 +101,4 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+

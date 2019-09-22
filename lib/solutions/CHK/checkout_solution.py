@@ -3,6 +3,12 @@ from enum import Enum, auto
 from typing import Dict
 from copy import deepcopy
 
+
+class OfferTypes(Enum):
+    multi_price = auto()
+    get_one_free = auto()
+
+
 ITEMS = {
     'A': {
         'unit_price': 50,
@@ -42,11 +48,25 @@ ITEMS = {
     },
     'E': {
         'unit_price': 40,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'E',
+                'offer_type': OfferTypes.get_one_free,
+                'quantity': 2,
+                'free_gift': 'B'
+            }
+        ]
     },
     'F': {
         'unit_price': 10,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'F',
+                'offer_type': OfferTypes.get_one_free,
+                'quantity': 2,
+                'free_gift': 'F'
+            }
+        ]
     },
     'G': {
         'unit_price': 20,
@@ -79,7 +99,14 @@ ITEMS = {
     },
     'K': {
         'unit_price': 80,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'K',
+                'offer_type': OfferTypes.multi_price,
+                'quantity': 2,
+                'price': 150
+            }
+        ]
     },
     'L': {
         'unit_price': 90,
@@ -91,7 +118,14 @@ ITEMS = {
     },
     'N': {
         'unit_price': 40,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'N',
+                'offer_type': OfferTypes.get_one_free,
+                'quantity': 3,
+                'free_gift': 'M'
+            }
+        ]
     },
     'O': {
         'unit_price': 10,
@@ -99,15 +133,36 @@ ITEMS = {
     },
     'P': {
         'unit_price': 50,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'P',
+                'offer_type': OfferTypes.multi_price,
+                'quantity': 5,
+                'price': 200
+            }
+        ]
     },
     'Q': {
         'unit_price': 30,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'Q',
+                'offer_type': OfferTypes.multi_price,
+                'quantity': 3,
+                'price': 80
+            }
+        ]
     },
     'R': {
         'unit_price': 50,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'R',
+                'offer_type': OfferTypes.get_one_free,
+                'quantity': 3,
+                'free_gift': 'Q'
+            }
+        ]
     },
     'S': {
         'unit_price': 30,
@@ -119,11 +174,25 @@ ITEMS = {
     },
     'U': {
         'unit_price': 40,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'U',
+                'offer_type': OfferTypes.get_one_free,
+                'quantity': 3,
+                'free_gift': 'U'
+            },
+        ]
     },
     'V': {
         'unit_price': 50,
-        'offers': []
+        'offers': [
+            {
+                'sku': 'V',
+                'offer_type': OfferTypes.multi_price,
+                'quantity': 2,
+                'price':  90
+            }
+        ]
     },
     'W': {
         'unit_price': 20,
@@ -142,81 +211,6 @@ ITEMS = {
         'offers': []
     },
 }
-
-
-class OfferTypes(Enum):
-    multi_price = auto()
-    get_one_free = auto()
-
-
-SPECIAL_OFFERS = [
-    # Multiprice offers
-
-
-
-    {
-        'sku': 'K',
-        'offer_type': OfferTypes.multi_price,
-        'quantity': 2,
-        'price': 150
-    },
-    {
-        'sku': 'P',
-        'offer_type': OfferTypes.multi_price,
-        'quantity': 5,
-        'price': 200
-    },
-    {
-        'sku': 'Q',
-        'offer_type': OfferTypes.multi_price,
-        'quantity': 3,
-        'price': 80
-    },
-    {
-        'sku': 'V',
-        'offer_type': OfferTypes.multi_price,
-        'quantity': 2,
-        'price':  90
-    },
-    {
-        'sku': 'V',
-        'offer_type': OfferTypes.multi_price,
-        'quantity': 3,
-        'price':  130
-    },
-
-    # Get One Free offers
-    {
-        'sku': 'E',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 2,
-        'free_gift': 'B'
-    },
-    {
-        'sku': 'F',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 2,
-        'free_gift': 'F'
-    },
-    {
-        'sku': 'N',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 3,
-        'free_gift': 'M'
-    },
-    {
-        'sku': 'R',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 3,
-        'free_gift': 'Q'
-    },
-    {
-        'sku': 'U',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 3,
-        'free_gift': 'U'
-    },
-]
 
 
 def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
@@ -279,6 +273,7 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 
 
 

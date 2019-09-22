@@ -67,7 +67,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
 
         if offer_details['offer_type'] == OfferTypes.get_one_free:
             if offer_details['free_gift'] == sku:
-                num_multiples = sku_count // offer_details['quantity'] + 1
+                num_multiples = sku_count // (offer_details['quantity'] + 1)
             else:
                 num_multiples = sku_count // offer_details['quantity']
 
@@ -109,6 +109,7 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 
 
 

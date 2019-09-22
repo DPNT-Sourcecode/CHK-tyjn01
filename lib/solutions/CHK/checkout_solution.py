@@ -279,35 +279,59 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
         key=offer_sort_key
     )
     for offer_details in sorted_offers:
-        sku = offer_details['sku']
-        sku_count = sku_counts[sku]
-
         offer_type = offer_details['offer_type']
-        if offer_type == OfferTypes.get_one_free:
-            if offer_details['free_gift'] == sku:
-                # Need to take into account that you to give away an F you need some
-                # the offer quantity + 1, for example if 4 F's purchased then only 1 can be
-                # given away as you have 2F + 1 for free, and 1 at the normal price.
-                num_multiples = sku_count // (offer_details['quantity'] + 1)
-            else:
-                num_multiples = sku_count // offer_details['quantity']
 
-            sku_count_of_free_gift = sku_counts[offer_details['free_gift']]
+        if offer_type == OfferTypes.group_buy_discount:
+            sku_count = sum(
+                sku_counts[sku_in_offer] for sku_in_offer in offer_details['skus']
+            )
 
-            sku_counts[offer_details['free_gift']] = max(sku_count_of_free_gift - num_multiples, 0)
-
-            # To prevent a given item being counted multiple times the sku count must be reduced
-            # by the number state in this offer, and then the "processed" items are simply added to
-            # the bill at their individual item price.
-            sku_counts[sku] -= num_multiples * offer_details['quantity']
-            total += (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
-
-        elif offer_type == OfferTypes.multi_price:
             num_multiples = sku_count // offer_details['quantity']
-
             total += num_multiples * offer_details['price']
 
-            sku_counts[sku] = sku_count % offer_details['quantity']
+            # because we are fair to the customers we include expensive items first:
+            items_in_offer_sorted_by_price = sorted(
+                [item for item in ITEMS.values() if item['sku'] in offer_details['skus']],
+                key=lambda i: -i['price']
+            )
+
+            items_to_process = num_multiples * offer_details['quantity']
+            for item in items_in_offer_sorted_by_price:
+                item_sku_count = sku_counts[item]
+
+                number_to_reduce_by = max(item_sku_count, items_to_process)
+                items_to_process -= number_to_reduce_by
+                item_sku_count -= number_to_reduce_by
+
+        else:
+            sku = offer_details['sku']
+            sku_count = sku_counts[sku]
+
+            if offer_type == OfferTypes.get_one_free:
+                if offer_details['free_gift'] == sku:
+                    # Need to take into account that you to give away an F you need some
+                    # the offer quantity + 1, for example if 4 F's purchased then only 1 can be
+                    # given away as you have 2F + 1 for free, and 1 at the normal price.
+                    num_multiples = sku_count // (offer_details['quantity'] + 1)
+                else:
+                    num_multiples = sku_count // offer_details['quantity']
+
+                sku_count_of_free_gift = sku_counts[offer_details['free_gift']]
+
+                sku_counts[offer_details['free_gift']] = max(sku_count_of_free_gift - num_multiples, 0)
+
+                # To prevent a given item being counted multiple times the sku count must be reduced
+                # by the number state in this offer, and then the "processed" items are simply added to
+                # the bill at their individual item price.
+                sku_counts[sku] -= num_multiples * offer_details['quantity']
+                total += (num_multiples * offer_details['quantity']) * ITEMS[sku]['unit_price']
+
+            elif offer_type == OfferTypes.multi_price:
+                num_multiples = sku_count // offer_details['quantity']
+
+                total += num_multiples * offer_details['price']
+
+                sku_counts[sku] = sku_count % offer_details['quantity']
 
     return sku_counts, total
 
@@ -330,6 +354,7 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 
 

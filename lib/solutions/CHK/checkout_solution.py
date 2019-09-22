@@ -18,13 +18,13 @@ ITEMS = {
                 'sku': 'A',
                 'offer_type': OfferTypes.multi_price,
                 'quantity': 3,
-                'price': 130  # unit price of 43.33 recurring
+                'price': 130
             },
             {
                 'sku': 'A',
                 'offer_type': OfferTypes.multi_price,
                 'quantity': 5,
-                'price': 200  # unit price of 40
+                'price': 200
             },
         ]
     },
@@ -317,6 +317,10 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             total += num_multiples * offer_details['price']
 
             # because we are fair to the customers we include expensive items first:
+            items_in_offer_sorted_by_price = sorted(
+                [item for item in ITEMS.values() if item['sku'] in offer_details['skus']],
+                key=lambda i: -i['price']
+            )
 
 
 
@@ -341,5 +345,6 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+
 
 

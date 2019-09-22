@@ -263,7 +263,7 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
             OfferTypes.multi_price: 1
         }
 
-        return offer_types_order, -offer['quantity']
+        return offer_types_order[offer['offer_type']], -offer['quantity']
 
     sku_counts = deepcopy(sku_counts)
     total = 0
@@ -302,10 +302,9 @@ def apply_offers(sku_counts: Dict[str, int]) -> (Dict[str, int], int):
 
                 item_sku_count = sku_counts[sku]
 
-                number_to_reduce_by = max(item_sku_count, items_to_process)
+                number_to_reduce_by = min(item_sku_count, items_to_process)
                 items_to_process -= number_to_reduce_by
                 sku_counts[sku] -= number_to_reduce_by
-            print('')
 
         else:
             sku = offer_details['sku']
@@ -358,3 +357,4 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+

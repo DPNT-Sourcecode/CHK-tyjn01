@@ -3,33 +3,35 @@ from enum import Enum, auto
 from typing import Dict
 from copy import deepcopy
 
-INDIVIDUAL_ITEM_PRICES = {
-    'A': 50,
-    'B': 30,
-    'C': 20,
-    'D': 15,
-    'E': 40,
-    'F': 10,
-    'G': 20,
-    'H': 10,
-    'I': 35,
-    'J': 60,
-    'K': 80,
-    'L': 90,
-    'M': 15,
-    'N': 40,
-    'O': 10,
-    'P': 50,
-    'Q': 30,
-    'R': 50,
-    'S': 30,
-    'T': 20,
-    'U': 40,
-    'V': 50,
-    'W': 20,
-    'X': 90,
-    'Y': 10,
-    'Z': 50,
+ITEMS = {
+    'A': {
+        'unit_price': 50,
+    },
+    'B': {'unit_price': 30},
+    'C': {'unit_price': 20},
+    'D': {'unit_price': 15},
+    'E': {'unit_price': 40},
+    'F': {'unit_price': 10},
+    'G': {'unit_price': 20},
+    'H': {'unit_price': 10},
+    'I': {'unit_price': 35},
+    'J': {'unit_price': 60},
+    'K': {'unit_price': 80},
+    'L': {'unit_price': 90},
+    'M': {'unit_price': 15},
+    'N': {'unit_price': 40},
+    'O': {'unit_price': 10},
+    'P': {'unit_price': 50},
+    'Q': {'unit_price': 30},
+    'R': {'unit_price': 50},
+    'S': {'unit_price': 30},
+    'T': {'unit_price': 20},
+    'U': {'unit_price': 40},
+    'V': {'unit_price': 50},
+    'W': {'unit_price': 20},
+    'X': {'unit_price': 90},
+    'Y': {'unit_price': 10},
+    'Z': {'unit_price': 50},
 }
 
 
@@ -195,4 +197,5 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 

@@ -97,7 +97,7 @@ SPECIAL_OFFERS = [
     {
         'sku': 'V',
         'offer_type': OfferTypes.multi_price,
-        'quantity': 2,
+        'quantity': 3,
         'price':  130
     },
 
@@ -195,3 +195,4 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+

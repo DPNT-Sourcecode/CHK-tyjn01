@@ -33,6 +33,9 @@ class TestCheckout():
         assert checkout_solution.checkout('FFFFEEEB') == 150
 
     def test_new_items(self):
-        assert checkout_solution.checkout('H'*16) == 20
+        sixteen_h = 'H'*16
+        assert checkout_solution.checkout(sixteen_h) == 135
+        assert checkout_solution.checkout(sixteen_h + 'V'*3 + 'U'*5 + 'R'*3 + 'Q'*3)
+
 
 

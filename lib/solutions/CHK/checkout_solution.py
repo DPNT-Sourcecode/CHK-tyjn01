@@ -7,6 +7,7 @@ from copy import deepcopy
 class OfferTypes(Enum):
     multi_price = auto()
     get_one_free = auto()
+    group_discount = auto()
 
 
 ITEMS = {
@@ -98,7 +99,7 @@ ITEMS = {
         'offers': []
     },
     'K': {
-        'unit_price': 80,
+        'unit_price': 70,
         'offers': [
             {
                 'sku': 'K',
@@ -165,7 +166,7 @@ ITEMS = {
         ]
     },
     'S': {
-        'unit_price': 30,
+        'unit_price': 20,
         'offers': []
     },
     'T': {
@@ -205,15 +206,15 @@ ITEMS = {
         'offers': []
     },
     'X': {
-        'unit_price': 90,
+        'unit_price': 17,
         'offers': []
     },
     'Y': {
-        'unit_price': 10,
+        'unit_price': 20,
         'offers': []
     },
     'Z': {
-        'unit_price': 50,
+        'unit_price': 21,
         'offers': []
     },
 }
@@ -284,3 +285,4 @@ def checkout(skus: str) -> int:
         total += count * ITEMS[sku]['unit_price']
 
     return total
+

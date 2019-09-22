@@ -39,6 +39,7 @@ class OfferTypes(Enum):
 
 
 SPECIAL_OFFERS = [
+    # Multiprice offers
     {
         'sku': 'A',
         'offer_type': OfferTypes.multi_price,
@@ -58,18 +59,6 @@ SPECIAL_OFFERS = [
         'price': 45
     },
     {
-        'sku': 'E',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 2,
-        'free_gift': 'B'
-    },
-    {
-        'sku': 'F',
-        'offer_type': OfferTypes.get_one_free,
-        'quantity': 2,
-        'free_gift': 'F'
-    },
-    {
         'sku': 'H',
         'offer_type': OfferTypes.multi_price,
         'quantity': 5,
@@ -82,28 +71,66 @@ SPECIAL_OFFERS = [
         'price': 80
     },
     {
-        'sku': 'B',
+        'sku': 'K',
         'offer_type': OfferTypes.multi_price,
         'quantity': 2,
-        'price': 45
+        'price': 150
     },
     {
-        'sku': 'B',
+        'sku': 'P',
         'offer_type': OfferTypes.multi_price,
-        'quantity': 2,
-        'price': 45
+        'quantity': 5,
+        'price': 200
     },
     {
-        'sku': 'B',
+        'sku': 'Q',
         'offer_type': OfferTypes.multi_price,
-        'quantity': 2,
-        'price': 45
+        'quantity': 3,
+        'price': 80
     },
     {
-        'sku': 'B',
+        'sku': 'V',
         'offer_type': OfferTypes.multi_price,
         'quantity': 2,
-        'price': 45
+        'price':  90
+    },
+    {
+        'sku': 'V',
+        'offer_type': OfferTypes.multi_price,
+        'quantity': 2,
+        'price':  130
+    },
+
+    # Get One Free offers
+    {
+        'sku': 'E',
+        'offer_type': OfferTypes.get_one_free,
+        'quantity': 2,
+        'free_gift': 'B'
+    },
+    {
+        'sku': 'F',
+        'offer_type': OfferTypes.get_one_free,
+        'quantity': 2,
+        'free_gift': 'F'
+    },
+    {
+        'sku': 'N',
+        'offer_type': OfferTypes.get_one_free,
+        'quantity': 3,
+        'free_gift': 'M'
+    },
+    {
+        'sku': 'R',
+        'offer_type': OfferTypes.get_one_free,
+        'quantity': 3,
+        'free_gift': 'Q'
+    },
+    {
+        'sku': 'U',
+        'offer_type': OfferTypes.get_one_free,
+        'quantity': 3,
+        'free_gift': 'U'
     },
 ]
 
@@ -168,6 +195,7 @@ def checkout(skus: str) -> int:
         total += count * INDIVIDUAL_ITEM_PRICES[sku]
 
     return total
+
 
 
 
